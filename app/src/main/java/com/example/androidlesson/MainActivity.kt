@@ -7,6 +7,8 @@ import com.example.homework.TestData
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.io.IOException
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
 
 class MainActivity : AppCompatActivity() {
     companion object{
@@ -20,6 +22,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        executorMethod()
         threadWay()
     }
 
@@ -42,6 +45,24 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
+
+    private fun executorMethod() {
+        val executor: ExecutorService = Executors.newSingleThreadExecutor()
+        executor.execute {
+            run {
+                if (!isCompleted) {
+                    try {
+                        Thread.sleep(5000)
+                        isCompleted = true
+                        Log.e("qqq", getJson().toString())
+                    } catch (e: InterruptedException) {
+                        e.printStackTrace()
+                    }
+                }
+            }
+        }
+    }
+
 
     private fun getJson():List<TestData>{
         var jsonString = ""
